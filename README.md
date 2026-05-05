@@ -172,11 +172,18 @@ The Node.js server that handles business logic and data management:
 
 3. Configure your database connection in `src/config/db.js`
 
-4. Start the server:
+4. Configure MongoDB Atlas and put your .env file
+   ```bash
+  PORT=5000
+  MONGO_URI=mongodb+srv://User:cbZW7iZpHpkZjKhspQ@booth.3khfcip.mongodb.net/?appName=Booth
+   ```
+   The backend will run on `http://localhost:5000` (or your configured port)
+
+5. Start the server:
    ```bash
    npm start
    ```
-   The backend will run on `http://localhost:3000` (or your configured port)
+   The backend will run on `http://localhost:5000` (or your configured port)
 
 ### Frontend Setup
 
