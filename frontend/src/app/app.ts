@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 
 import { CreateTollLogRequest, TollLog, VehicleType } from './models/toll-log.model';
 import { TollLogService } from './services/toll-log.service';
@@ -24,7 +24,11 @@ export class App implements OnInit {
 
   readonly vehicleTypes: VehicleType[] = ['Car', 'Truck', 'Motorcycle'];
 
-  constructor(private readonly tollLogService: TollLogService) {}
+  constructor(
+    private readonly tollLogService: TollLogService,
+    private readonly cdr: ChangeDetectorRef,
+    private readonly ngZone: NgZone,
+  ) { }
 
   ngOnInit(): void {
     this.fetchLogs();
@@ -33,16 +37,23 @@ export class App implements OnInit {
   fetchLogs(): void {
     this.isLoading = true;
     this.errorMessage = '';
+    this.cdr.detectChanges();
 
     this.tollLogService.getLogs().subscribe({
       next: (logs) => {
-        this.logs = logs;
-        this.applyFilters();
-        this.isLoading = false;
+        this.ngZone.run(() => {
+          this.logs = logs;
+          this.applyFilters();
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        });
       },
       error: () => {
-        this.errorMessage = 'Unable to load toll records.';
-        this.isLoading = false;
+        this.ngZone.run(() => {
+          this.errorMessage = 'Unable to load toll records.';
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        });
       },
     });
   }
@@ -65,12 +76,18 @@ export class App implements OnInit {
     if (editingId) {
       this.tollLogService.updateLog(editingId, payload).subscribe({
         next: (updatedLog) => {
-          this.logs = this.logs.map((log) => (log._id === updatedLog._id ? updatedLog : log));
-          this.applyFilters();
-          this.finishEntrySuccess();
+          this.ngZone.run(() => {
+            this.logs = this.logs.map((log) => (log._id === updatedLog._id ? updatedLog : log));
+            this.applyFilters();
+            this.finishEntrySuccess();
+            this.cdr.detectChanges();
+          });
         },
-        error: (error) => {
-          this.errorMessage = 'Unable to update toll entry.';
+        error: () => {
+          this.ngZone.run(() => {
+            this.errorMessage = 'Unable to update toll entry.';
+            this.cdr.detectChanges();
+          });
         },
       });
       return;
@@ -78,18 +95,24 @@ export class App implements OnInit {
 
     this.tollLogService.createLog(payload).subscribe({
       next: (newLog) => {
-        this.logs = [newLog, ...this.logs];
-        this.applyFilters();
-        this.finishEntrySuccess();
+        this.ngZone.run(() => {
+          this.logs = [newLog, ...this.logs];
+          this.applyFilters();
+          this.finishEntrySuccess();
+          this.cdr.detectChanges();
+        });
       },
       error: (error) => {
-        // Check if it's a duplicate entry error (409 Conflict)
-        if (error.status === 409 && error.error?.isDuplicate) {
-          this.errorMessage = error.error?.message || 'This vehicle is already present in the system.';
-          alert(this.errorMessage);
-        } else {
-          this.errorMessage = 'Unable to create new toll entry.';
-        }
+        this.ngZone.run(() => {
+          // Check if it's a duplicate entry error (409 Conflict)
+          if (error.status === 409 && error.error?.isDuplicate) {
+            this.errorMessage = error.error?.message || 'This vehicle is already present in the system.';
+            alert(this.errorMessage);
+          } else {
+            this.errorMessage = 'Unable to create new toll entry.';
+          }
+          this.cdr.detectChanges();
+        });
       },
     });
   }
@@ -100,24 +123,32 @@ export class App implements OnInit {
     }
     this.errorMessage = '';
     this.editingTarget = log;
+    this.cdr.detectChanges();
   }
 
   cancelEdit(): void {
     this.errorMessage = '';
     this.editingTarget = null;
+    this.cdr.detectChanges();
   }
 
   removeLog(logId: string): void {
     this.tollLogService.deleteLog(logId).subscribe({
       next: () => {
-        this.logs = this.logs.filter((log) => log._id !== logId);
-        this.applyFilters();
-        if (this.editingTarget?._id === logId) {
-          this.editingTarget = null;
-        }
+        this.ngZone.run(() => {
+          this.logs = this.logs.filter((log) => log._id !== logId);
+          this.applyFilters();
+          if (this.editingTarget?._id === logId) {
+            this.editingTarget = null;
+          }
+          this.cdr.detectChanges();
+        });
       },
       error: () => {
-        this.errorMessage = 'Unable to delete toll entry.';
+        this.ngZone.run(() => {
+          this.errorMessage = 'Unable to delete toll entry.';
+          this.cdr.detectChanges();
+        });
       },
     });
   }
