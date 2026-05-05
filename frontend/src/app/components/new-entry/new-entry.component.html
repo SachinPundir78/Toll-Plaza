@@ -1,0 +1,37 @@
+<section class="panel">
+  <h2>{{ isEditing ? 'Edit Entry' : 'New Entry Form' }}</h2>
+  <form [formGroup]="entryForm" (ngSubmit)="submitEntry()" class="entry-form">
+    <label>
+      License Plate
+      <input type="text" formControlName="licensePlate" placeholder="Enter license plate" />
+    </label>
+
+    <label>
+      Vehicle Type
+      <select formControlName="vehicleType">
+        @for (type of vehicleTypes; track type) {
+          <option [value]="type">{{ type }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Status
+      <select formControlName="status">
+        @for (status of statuses; track status) {
+          <option [value]="status">{{ status }}</option>
+        }
+      </select>
+    </label>
+
+    <label class="checkbox-row">
+      <input type="checkbox" formControlName="isOfficial" />
+      Official / Government Vehicle
+    </label>
+
+    <button type="submit">{{ isEditing ? 'Update Entry' : 'Add Entry' }}</button>
+    @if (isEditing) {
+      <button type="button" class="secondary-btn" (click)="onCancel()">Cancel Edit</button>
+    }
+  </form>
+</section>

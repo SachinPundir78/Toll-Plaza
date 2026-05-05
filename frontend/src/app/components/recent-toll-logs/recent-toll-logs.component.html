@@ -1,0 +1,83 @@
+<section class="panel">
+  <h2>Recent Toll Logs</h2>
+
+  <div class="filters">
+    <input
+      type="text"
+      placeholder="Search by license plate"
+      [value]="searchTerm"
+      (input)="onSearchInput($any($event.target).value)"
+    />
+
+    <select [value]="selectedType" (change)="onTypeSelect($any($event.target).value)">
+      <option value="All">All Types</option>
+      @for (type of vehicleTypes; track type) {
+        <option [value]="type">{{ type }}</option>
+      }
+    </select>
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <div class="table-wrap" [class.table-wrap-loading]="isLoading">
+    <table>
+      <thead>
+        <tr>
+          <th>License Plate</th>
+          <th>Vehicle Type</th>
+          <th>Timestamp</th>
+          <th>Toll Fee</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading) {
+          @for (row of loadingSkeletonRows; track row) {
+            <tr class="skeleton-row">
+              <td><span class="skeleton-bar skeleton-bar--sm"></span></td>
+              <td><span class="skeleton-bar skeleton-bar--md"></span></td>
+              <td><span class="skeleton-bar skeleton-bar--lg"></span></td>
+              <td><span class="skeleton-bar skeleton-bar--xs"></span></td>
+              <td><span class="skeleton-bar skeleton-bar--sm"></span></td>
+              <td><span class="skeleton-bar skeleton-bar--md"></span></td>
+            </tr>
+          }
+        } @else {
+          @for (log of logs; track log._id ?? log.timestamp) {
+            <tr>
+              <td>{{ log.licensePlate }}</td>
+              <td class="vehicle-type-cell">
+                <div class="cell-flex cell-flex--pills">
+                  <span class="vehicle-pill" [ngClass]="'vehicle-pill-' + log.vehicleType.toLowerCase()">{{
+                    log.vehicleType
+                  }}</span>
+                  @if (log.isOfficial) {
+                    <span class="vehicle-pill vehicle-pill-official">Official</span>
+                  }
+                </div>
+              </td>
+              <td>{{ log.timestamp | date: 'medium' }}</td>
+              <td>{{ log.tollFee | currency: 'USD' }}</td>
+              <td>
+                <span class="status" [class]="log.status.toLowerCase()">{{ log.status }}</span>
+              </td>
+              <td class="action-cell">
+                <div class="cell-flex">
+                  <button type="button" class="secondary-btn" (click)="onEdit(log)">Edit</button>
+                  <button type="button" class="danger-btn" (click)="onDelete(log)">Delete</button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">No matching records found.</td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

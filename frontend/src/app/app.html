@@ -1,0 +1,28 @@
+<app-navbar />
+
+<main class="container page-main">
+  <header class="header">
+    <h1>Toll Plaza Dashboard</h1>
+    <p>Track recent vehicle entries and calculate toll fees automatically.</p>
+  </header>
+
+  <app-new-entry
+    [editingLog]="editingTarget"
+    [formVersion]="formVersion"
+    (submitted)="onEntrySubmitted($event)"
+    (cancelled)="cancelEdit()"
+  />
+
+  <app-recent-toll-logs
+    [logs]="filteredLogs"
+    [isLoading]="isLoading"
+    [errorMessage]="errorMessage"
+    [searchTerm]="searchTerm"
+    [selectedType]="selectedType"
+    [vehicleTypes]="vehicleTypes"
+    (searchTermChange)="onSearchTermChange($event)"
+    (selectedTypeChange)="onVehicleTypeChange($event)"
+    (edit)="startEdit($event)"
+    (deleteId)="removeLog($event)"
+  />
+</main>

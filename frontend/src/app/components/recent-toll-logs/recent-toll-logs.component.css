@@ -1,0 +1,185 @@
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.filters input {
+  min-width: 260px;
+}
+
+.filters input,
+.filters select {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table-wrap-loading {
+  pointer-events: none;
+}
+
+.skeleton-row td {
+  vertical-align: middle;
+  padding: 12px 8px;
+}
+
+.skeleton-bar {
+  display: block;
+  height: 14px;
+  max-width: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 45%, #f3f4f6 100%);
+  background-size: 220% 100%;
+  animation: skeleton-shimmer 1.1s ease-in-out infinite;
+}
+
+.skeleton-bar--xs {
+  width: 36%;
+}
+
+.skeleton-bar--sm {
+  width: 48%;
+}
+
+.skeleton-bar--md {
+  width: 62%;
+}
+
+.skeleton-bar--lg {
+  width: 88%;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  min-width: 760px;
+}
+
+th,
+td {
+  text-align: left;
+  vertical-align: middle;
+  padding: 10px 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.cell-flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.cell-flex--pills {
+  gap: 6px;
+}
+
+.vehicle-pill {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+
+.vehicle-pill-car {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.vehicle-pill-truck {
+  color: #9a3412;
+  background: #ffedd5;
+}
+
+.vehicle-pill-motorcycle {
+  color: #6d28d9;
+  background: #ede9fe;
+}
+
+.vehicle-pill-official {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.action-cell {
+  white-space: nowrap;
+}
+
+th {
+  color: #374151;
+}
+
+.status {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.status.paid {
+  color: #065f46;
+  background: #d1fae5;
+}
+
+.status.pending {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.status.violation {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.error {
+  color: #b91c1c;
+  margin: 0 0 10px;
+}
+
+.secondary-btn,
+.danger-btn {
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #111827;
+}
+
+.secondary-btn:hover {
+  background: #e5e7eb;
+}
+
+.danger-btn {
+  background: #dc2626;
+  border: 1px solid #dc2626;
+  color: #ffffff;
+}
+
+.danger-btn:hover {
+  background: #b91c1c;
+}
