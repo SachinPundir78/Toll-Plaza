@@ -175,7 +175,8 @@ The Node.js server that handles business logic and data management:
 4. Configure MongoDB Atlas and put your .env file
    
   PORT=5000
-  MONGO_URI=mongodb+srv://User:cbZW7iZpHpkZjKhspQ@booth.3khfcip.mongodb.net/?appName=Booth
+
+  MONGO_URI=mongodb+srv://User:cbZERiZpHpkZjKhspQ@booth.3khfcip.mongodb.net/?appName=Booth
 
    The backend will run on `http://localhost:5000` (or your configured port)
 
