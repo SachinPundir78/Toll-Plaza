@@ -25,4 +25,8 @@ export class TollLogService {
   deleteLog(id: string): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
   }
+
+  getTotalAmount(): Observable<{ total_amount: number }> {
+    return this.http.get<{ total_amount: number }>(`${this.apiUrl}/total-amount`);
+  }
 }

@@ -23,3 +23,30 @@
   margin: 6px 0 0;
   color: #4b5563;
 }
+
+
+.total-amount-card {
+  background: #ffffff;
+  border: 0.5px solid #e5e7eb;
+  border-left: 4px solid #3b82f6;
+  border-radius: 12px;
+  padding: 28px 32px;
+}
+
+.total-amount-card p {
+  margin: 0 0 6px;
+  font-size: 11px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 500;
+}
+
+.total-amount-card h1 {
+  margin: 0;
+  font-size: 44px;
+  font-weight: 500;
+  color: #1f2937;
+  line-height: 1;
+}
+

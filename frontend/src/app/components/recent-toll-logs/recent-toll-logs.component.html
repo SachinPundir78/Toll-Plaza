@@ -11,7 +11,7 @@
 
     <select [value]="selectedType" (change)="onTypeSelect($any($event.target).value)">
       <option value="All">All Types</option>
-      @for (type of vehicleTypes; track type) {
+      @for (type of vehicleTypes; track type) {3
         <option [value]="type">{{ type }}</option>
       }
     </select>

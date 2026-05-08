@@ -24,3 +24,4 @@ export interface UpdateTollLogRequest {
   isOfficial: boolean;
   status: TollStatus;
 }
+

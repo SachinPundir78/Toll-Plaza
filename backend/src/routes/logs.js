@@ -8,6 +8,7 @@ router.get("/", async (_req, res) => {
   try {
     const logs = await TollLog.find().sort({ timestamp: -1 }).lean();
     return res.json(logs);
+    
   } catch (error) {
     return res.status(500).json({ message: "Failed to fetch logs", error: error.message });
   }
@@ -94,6 +95,32 @@ router.delete("/:id", async (req, res) => {
     return res.json({ message: "Log deleted successfully" });
   } catch (error) {
     return res.status(500).json({ message: "Failed to delete log", error: error.message });
+  }
+});
+
+router.get("/total-amount", async (req, res) => {
+  console.log("hi")
+  try {
+    const result = await (TollLog.aggregate([
+      {
+      $group: {
+        _id: null,
+        total_amount: { $sum: "$tollFee" },
+      },
+    },
+    ]));
+    console.log(result);
+    const amount = result[0]?.total_amount || 0;
+    
+    return res.json({
+      total_amount: amount
+    });
+    
+  } catch (error) {
+    return res.status(500).json({
+      message: " Failed to calculate",
+      error : error.message,
+    })
   }
 });
 

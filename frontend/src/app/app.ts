@@ -1,14 +1,16 @@
 import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 
-import { CreateTollLogRequest, TollLog, VehicleType } from './models/toll-log.model';
+import { CreateTollLogRequest, TollLog, VehicleType,  } from './models/toll-log.model';
 import { TollLogService } from './services/toll-log.service';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NewEntryComponent } from './components/new-entry/new-entry.component';
 import { RecentTollLogsComponent } from './components/recent-toll-logs/recent-toll-logs.component';
+import { Observable } from 'rxjs';  
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [NavbarComponent, NewEntryComponent, RecentTollLogsComponent],
+  imports: [NavbarComponent, NewEntryComponent, RecentTollLogsComponent, CurrencyPipe],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -21,6 +23,7 @@ export class App implements OnInit {
   selectedType = 'All';
   editingTarget: TollLog | null = null;
   formVersion = 0;
+  total_amount = 0;
 
   readonly vehicleTypes: VehicleType[] = ['Car', 'Truck', 'Motorcycle'];
 
@@ -32,7 +35,7 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     this.fetchLogs();
-  }
+ }
 
   fetchLogs(): void {
     this.isLoading = true;
@@ -56,6 +59,18 @@ export class App implements OnInit {
         });
       },
     });
+
+    this.tollLogService.getTotalAmount().subscribe({
+      next: (logs) => {
+        this.ngZone.run(() => {
+          this.total_amount = logs.total_amount;
+           this.cdr.detectChanges();
+        })
+      },
+      error: () => {
+        console.error("Failed to fetch total amount");
+      }
+    })
   }
 
   onSearchTermChange(value: string): void {
@@ -167,4 +182,8 @@ export class App implements OnInit {
     this.editingTarget = null;
     this.formVersion++;
   }
+
+  
+  
+
 }
